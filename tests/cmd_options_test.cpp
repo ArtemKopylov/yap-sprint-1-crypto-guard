@@ -59,11 +59,11 @@ TEST(ProgramOptions, SimpleChecksumTest) {
 
 TEST(ProgramOptions, SimpleWrongOptionTest) {
     ProgramOptions po;
-    Args args("ABOBA");
+    Args args("We shall cease means of production!");
     testing::internal::CaptureStdout();
     ASSERT_NO_THROW(po.Parse(args.argc, args.argv()));
     assert_po_parse_fail(po);
-    ASSERT_TRUE(testing::internal::GetCapturedStdout().contains("Unrecognized option error placeholder"));
+    ASSERT_TRUE(testing::internal::GetCapturedStdout().contains("Incorrect --command(-c) option"));
 }
 
 TEST(ProgramOptions, SimpleHelpTest) {
@@ -88,27 +88,27 @@ TEST(ProgramOptions, InvalidCombinationTest) {
     testing::internal::CaptureStdout();
     ASSERT_NO_THROW(po.Parse(noInputArgs.argc, noInputArgs.argv()));
     assert_po_parse_fail(po);
-    ASSERT_TRUE(testing::internal::GetCapturedStdout().contains("Missing input file error placeholder"));
+    ASSERT_TRUE(testing::internal::GetCapturedStdout().contains("Incorrect input file parameter"));
 
     // No output file
     Args noOutArgs("--input in.txt --password 1234 --command encrypt");
     testing::internal::CaptureStdout();
     ASSERT_NO_THROW(po.Parse(noOutArgs.argc, noOutArgs.argv()));
     assert_po_parse_fail(po);
-    ASSERT_TRUE(testing::internal::GetCapturedStdout().contains("Missing output file error placeholder"));
+    ASSERT_TRUE(testing::internal::GetCapturedStdout().contains("Incorrect output file parameter"));
 
     // No password
     Args noPassArgs("--input in.txt --output out.txt --command encrypt");
     testing::internal::CaptureStdout();
     ASSERT_NO_THROW(po.Parse(noPassArgs.argc, noPassArgs.argv()));
     assert_po_parse_fail(po);
-    ASSERT_TRUE(testing::internal::GetCapturedStdout().contains("Missing password error placeholder"));
+    ASSERT_TRUE(testing::internal::GetCapturedStdout().contains("Incorrect password parameter"));
 
     // No command
-    Args noCArgs("--input in.txt --output out.txt --command encrypt");
+    Args noCArgs("--input in.txt --output out.txt --password 1234");
     testing::internal::CaptureStdout();
     ASSERT_NO_THROW(po.Parse(noCArgs.argc, noCArgs.argv()));
     assert_po_parse_fail(po);
-    ASSERT_TRUE(testing::internal::GetCapturedStdout().contains("Missing command error placeholder"));
+    ASSERT_TRUE(testing::internal::GetCapturedStdout().contains("Incorrect --command(-c) option"));
 }
 }  // namespace CryptoGuard::Test
