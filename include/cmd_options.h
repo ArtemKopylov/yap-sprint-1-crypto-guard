@@ -11,11 +11,7 @@ public:
     ProgramOptions();
     ~ProgramOptions();
 
-    enum class COMMAND_TYPE {
-        ENCRYPT,
-        DECRYPT,
-        CHECKSUM,
-    };
+    enum class COMMAND_TYPE { ENCRYPT, DECRYPT, CHECKSUM, INVALID };
 
     void Parse(int argc, char *argv[]);
 
