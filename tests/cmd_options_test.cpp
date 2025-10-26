@@ -111,4 +111,13 @@ TEST(ProgramOptions, InvalidCombinationTest) {
     assert_po_parse_fail(po);
     ASSERT_TRUE(testing::internal::GetCapturedStdout().contains("Incorrect --command(-c) option"));
 }
+
+TEST(ProgramOptions, MissingOptionTest) {
+    ProgramOptions po;
+    Args noCArgs("--command encrypt --input in.txt--output out.txt --password");
+    testing::internal::CaptureStdout();
+    ASSERT_NO_THROW(po.Parse(noCArgs.argc, noCArgs.argv()));
+    assert_po_parse_fail(po);
+    ASSERT_TRUE(testing::internal::GetCapturedStdout().contains("the required argument for option"));
+}
 }  // namespace CryptoGuard::Test
