@@ -6,12 +6,19 @@
 
 namespace CryptoGuard {
 
+namespace po = boost::program_options;
+
 class ProgramOptions {
 public:
     ProgramOptions();
     ~ProgramOptions();
 
-    enum class COMMAND_TYPE { ENCRYPT, DECRYPT, CHECKSUM, INVALID };
+    enum class COMMAND_TYPE {
+        ENCRYPT,
+        DECRYPT,
+        CHECKSUM,
+        INVALID,
+    };
 
     void Parse(int argc, char *argv[]);
 
@@ -32,7 +39,11 @@ private:
     std::string outputFile_;
     std::string password_;
 
-    boost::program_options::options_description desc_;
+    po::options_description desc_;
+
+    void reset();
+    void readParams(const po::variables_map &vm);
+    bool validate();
 };
 
 }  // namespace CryptoGuard
